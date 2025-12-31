@@ -48,6 +48,67 @@ For articles with multiple images, paste ALL text content first, then insert ima
 6. Insert content images at positions specified by block_index
 7. Save as draft (NEVER auto-publish)
 
+## 高效执行原则 (Efficiency Guidelines)
+
+**目标**: 最小化操作之间的等待时间，实现流畅的自动化体验。
+
+### 1. 避免不必要的 browser_snapshot
+
+大多数浏览器操作（click, type, press_key 等）都会在返回结果中包含页面状态。**不要**在每次操作后单独调用 `browser_snapshot`，直接使用操作返回的页面状态即可。
+
+```
+❌ 错误做法：
+browser_click → browser_snapshot → 分析 → browser_click → browser_snapshot → ...
+
+✅ 正确做法：
+browser_click → 从返回结果中获取页面状态 → browser_click → ...
+```
+
+### 2. 避免不必要的 browser_wait_for
+
+只在以下情况使用 `browser_wait_for`：
+- 等待图片上传完成（`textGone="正在上传媒体"`）
+- 等待页面初始加载（极少数情况）
+
+**不要**使用 `browser_wait_for` 来等待按钮或输入框出现 - 它们在页面加载完成后立即可用。
+
+### 3. 并行执行独立操作
+
+当两个操作没有依赖关系时，可以在同一个消息中并行调用多个工具：
+
+```
+✅ 可以并行：
+- 填写标题 (browser_type) + 复制HTML到剪贴板 (Bash)
+- 解析Markdown生成JSON + 生成HTML文件
+
+❌ 不能并行（有依赖）：
+- 必须先点击create才能上传封面图
+- 必须先粘贴内容才能插入图片
+```
+
+### 4. 连续执行浏览器操作
+
+每个浏览器操作返回的页面状态包含所有需要的元素引用。直接使用这些引用进行下一步操作：
+
+```
+# 理想流程（每步直接执行，不额外等待）：
+browser_navigate → 从返回状态找create按钮 → browser_click(create)
+→ 从返回状态找上传按钮 → browser_click(上传) → browser_file_upload
+→ 从返回状态找应用按钮 → browser_click(应用)
+→ 从返回状态找标题框 → browser_type(标题)
+→ 点击编辑器 → browser_press_key(Meta+v)
+→ ...
+```
+
+### 5. 准备工作前置
+
+在开始浏览器操作之前，先完成所有准备工作：
+1. 解析 Markdown 获取 JSON 数据
+2. 生成 HTML 文件到 /tmp/
+3. 记录 title、cover_image、content_images 等信息
+
+这样浏览器操作阶段可以连续执行，不需要中途停下来处理数据。
+
 ## Step 1: Parse Markdown (Python)
 
 Use `parse_markdown.py` to extract all structured data:
