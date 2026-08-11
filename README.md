@@ -1,5 +1,7 @@
 # LinkedIn Article Publisher Skill
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2T024VDBG)
+
 [English](README.md) | [中文](README_CN.md)
 
 > Publish Markdown articles to LinkedIn Articles with one command. Say goodbye to tedious rich text editing.
