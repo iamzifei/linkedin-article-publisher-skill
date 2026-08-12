@@ -1,6 +1,7 @@
 ---
 name: linkedin-article-publisher
 description: Publish Markdown articles to LinkedIn Articles editor with proper formatting. Use when user wants to publish a Markdown file/URL to LinkedIn Articles, or mentions "publish to LinkedIn", "post article to LinkedIn", "LinkedIn article", or wants help with LinkedIn article publishing. Handles cover image upload and converts Markdown to rich text automatically.
+  新手引导：输入 `/linkedin 新手`、「这个怎么用」「第一次用」「能干嘛」时，走 SKILL.md 的〈新手上路〉，不要直接开始干活。
 ---
 
 # LinkedIn Article Publisher
@@ -388,3 +389,44 @@ LinkedIn's editor supports:
 - User must be logged into LinkedIn in the browser
 - No Premium subscription required (unlike X Articles)
 - Anyone with a LinkedIn account can publish articles
+
+
+## 新手上路（用户不知道该输入什么时，走这里）
+
+**触发**：`/linkedin 新手`、「这个怎么用」「第一次用」「能干嘛」「带我走一遍」，
+以及用户输入了技能名却没有给任何任务的时候。
+
+这个模式的铁律：**不假设、不索取**。用户可能什么都没准备，
+不要一上来就问他要文件、要 API key、要具体需求。按下面四步走：
+
+**一、先说清楚这是什么（三句话以内）**
+
+一句话：**把一篇 Markdown 直接发成 LinkedIn 长文**，格式不丢。
+标题、小标题、列表、粗体、链接、封面图都会保留，
+不用再手动往 LinkedIn 编辑器里一段段粘。
+
+**二、给编号选项，让他按回车就能继续**
+
+不要问开放式问题（「你想做什么？」对新手是负担）。给 3 个选项加一个默认：
+
+```
+想先看哪个？（直接回车 = 1）
+  1. 看看一篇文章发出去长什么样（示例）
+  2. 把我的 Markdown 文件发成草稿
+  3. 先讲讲要准备什么
+```
+
+**三、直接演示一遍，边做边解释**
+
+选完立刻做给他看，用**示例数据**，不需要他提供任何东西。
+每做完一步，加一行「💡 刚才发生了什么」，一句话说明这步的意义。
+
+**四、毕业**
+
+演示完只问一个是非题：「要不要用你自己的文章真跑一遍？」
+答是就进正常流程；答否就告诉他随时回来输 `/linkedin 新手`。
+
+**关于前置条件**：这个技能需要 Playwright MCP，以及浏览器里已经登录 LinkedIn。
+**新手模式下不要提前索取**——先用示例数据演示完，到第四步真跑的时候再引导他配置，
+并说清楚在哪配、怎么拿。新手最容易在这一步流失。
+
